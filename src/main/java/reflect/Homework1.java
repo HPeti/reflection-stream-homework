@@ -27,8 +27,6 @@ public class Homework1 {
      */
     public void streamPipeline3() {
         // Hiányzik az azonos paraméterek része
-
-
         Arrays.stream(java.lang.String.class.getMethods()).filter(s -> s.getParameterCount() >= 2).map(s -> s.getName()).distinct().forEach(System.out::println);
     }
 
@@ -36,14 +34,15 @@ public class Homework1 {
      * Prints all distinct return types of the declared methods of java.lang.String sorted alphabetically.
      */
     public void streamPipeline4() {
-        Arrays.stream(java.lang.String.class.getMethods()).filter(c -> Arrays.stream(c.getParameterTypes()).anyMatch(p -> p == boolean.class)).sorted(Comparator.comparing(c -> c.getName())).forEach(System.out::println);
+        Arrays.stream(java.lang.String.class.getMethods()).map(s -> s.getReturnType()).distinct().sorted(Comparator.comparing(r -> r.getName())).forEach(System.out::println);
+
     }
 
     /**
      * Prints the declared methods of java.lang.String with at least one boolean parameter, sorted by name.
      */
     public void streamPipeline5() {
-        Arrays.stream(java.lang.String.class.getMethods()).filter(c -> Arrays.stream(c.getParameterTypes()).anyMatch(p -> p == boolean.class)).forEach(System.out::println);
+        Arrays.stream(java.lang.String.class.getMethods()).filter(c -> Arrays.stream(c.getParameterTypes()).anyMatch(p -> p == boolean.class)).sorted(Comparator.comparing(c -> c.getName())).forEach(System.out::println);
     }
 
     /**
@@ -57,7 +56,7 @@ public class Homework1 {
      * Returns the longest name of the declared methods of java.lang.String.
      */
     public String streamPipeline7() {
-        return Arrays.stream(java.lang.String.class.getMethods()).map(s -> s.getName()).sorted(Comparator.reverseOrder()).findFirst().get();
+        return Arrays.stream(java.lang.String.class.getMethods()).map(s -> s.getName()).max(Comparator.comparingInt(n -> n.length())).get();
     }
 
     /**
@@ -71,7 +70,7 @@ public class Homework1 {
      * Returns summary statistics about the number of parameters for the declared methods of java.lang.String.
      */
     public IntSummaryStatistics streamPipeline9() {
-        return Arrays.stream(java.lang.String.class.getMethods()).mapToInt(s -> s.getParameters().length).summaryStatistics();
+        return Arrays.stream(java.lang.String.class.getMethods()).mapToInt(s -> s.getParameterCount()).summaryStatistics();
     }
 
     /**
@@ -85,18 +84,14 @@ public class Homework1 {
      * Returns the declared method of java.lang.String with the most number of parameters.
      */
     public Method streamPipeline11() {
-        //Valamiért a sorted(Comparator.comparingInt(s -> s.getParameterCount()).reversed()) hibát dobott
-        return Arrays.stream(java.lang.String.class.getMethods()).sorted(Comparator.comparingInt(s -> s.getParameterCount()*-1)).findFirst().get();
+        return Arrays.stream(java.lang.String.class.getMethods()).max(Comparator.comparingInt(s -> s.getParameterCount())).get();
     }
 
     /**
      * Prints all distinct parameter types of the declared methods of java.lang.String sorted alphabetically.
      */
     public void streamPipeline12() {
-        // TODO
+        Arrays.stream(java.lang.String.class.getMethods()).flatMap(s -> Arrays.stream(s.getParameterTypes())).distinct().sorted(Comparator.comparing(p -> p.getName())).forEach(System.out::println);
     }
 
 }
-
-
-//Arrays.stream(java.lang.String.class.getMethod("indexOf", String.class, int.class).getParameterTypes()).anyMatch(c -> c.getName() == boolean.class.getName())
