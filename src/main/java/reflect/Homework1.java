@@ -26,8 +26,7 @@ public class Homework1 {
      * Prints the declared methods of java.lang.String with two or more parameters whose parameters are all of the same type, sorted by name.
      */
     public void streamPipeline3() {
-        // Hiányzik az azonos paraméterek része
-        Arrays.stream(java.lang.String.class.getMethods()).filter(s -> s.getParameterCount() >= 2).map(s -> s.getName()).distinct().forEach(System.out::println);
+        Arrays.stream(String.class.getMethods()).filter(s -> s.getParameterCount() >= 2 &&  Arrays.stream(s.getParameterTypes()).allMatch(p -> p == Arrays.stream(s.getParameterTypes()).findFirst().get())).sorted(Comparator.comparing(s -> s.getName())).forEach(System.out::println);
     }
 
     /**
@@ -35,7 +34,6 @@ public class Homework1 {
      */
     public void streamPipeline4() {
         Arrays.stream(java.lang.String.class.getMethods()).map(s -> s.getReturnType()).distinct().sorted(Comparator.comparing(r -> r.getName())).forEach(System.out::println);
-
     }
 
     /**
